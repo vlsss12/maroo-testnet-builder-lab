@@ -1,0 +1,9 @@
+{
+  "name": "maroo-builder-demo",
+  "mode": "testnet-only",
+  "maxPerTransferOkrw": "1000000",
+  "allowedTargets": [],
+  "requirePreflight": true,
+  "requireHumanApprovalForBroadcast": true,
+  "notes": "Configuration example only. It does not create, fund, or operate a wallet."
+}

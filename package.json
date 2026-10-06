@@ -1,0 +1,31 @@
+{
+  "name": "maroo-testnet-policy-lab",
+  "version": "1.0.0",
+  "private": false,
+  "type": "module",
+  "description": "Educational Maroo Testnet activity contract and PCL learning guide",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "compile": "node scripts/compile.mjs",
+    "test": "node --test",
+    "deploy": "npm run compile && node scripts/deploy.mjs",
+    "deploy:pcl": "npm run compile && node scripts/deploy-pcl-proxy.mjs",
+    "configure:denylist": "node scripts/configure-denylist.mjs",
+    "verify:pcl": "node scripts/verify-pcl-policy.mjs",
+    "inspect:pcl": "node scripts/inspect-pcl.mjs",
+    "record": "node scripts/record-activity.mjs",
+    "inspect:network": "node scripts/inspect-network.mjs",
+    "preflight:plan": "node scripts/preflight-plan.mjs"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "ethers": "^6.15.0",
+    "solc": "^0.8.37"
+  },
+  "overrides": {
+    "tmp": "^0.2.7"
+  }
+}
