@@ -18,7 +18,8 @@
     "inspect:pcl": "node scripts/inspect-pcl.mjs",
     "record": "node scripts/record-activity.mjs",
     "inspect:network": "node scripts/inspect-network.mjs",
-    "preflight:plan": "node scripts/preflight-plan.mjs"
+    "preflight:plan": "node scripts/preflight-plan.mjs",
+    "audit:readonly": "node scripts/readonly-audit.mjs"
   },
   "dependencies": {
     "dotenv": "^16.4.7",
