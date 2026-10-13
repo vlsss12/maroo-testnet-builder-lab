@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { buildPreflightPlan } from '../scripts/preflight-plan.mjs';
 import { inspectNetwork, MAROO_CHAIN_ID, validateOptionalAddresses } from '../scripts/inspect-network.mjs';
+import { buildReadonlyAudit } from '../scripts/readonly-audit.mjs';
 
 test('preflight plan rejects an amount above the local cap', () => {
   const result = buildPreflightPlan({ target: '0x0000000000000000000000000000000000000001', amount: '1001', maxAmount: '1000' });
@@ -35,4 +36,21 @@ test('network inspector is read-only and checks Maroo chain ID', async () => {
 test('optional surface addresses are validated without exposing secrets', () => {
   assert.deepEqual(validateOptionalAddresses({ EAS_ADDRESS: '0x0000000000000000000000000000000000000005' }), { EAS: '0x0000000000000000000000000000000000000005' });
   assert.throws(() => validateOptionalAddresses({ EAS_ADDRESS: 'not-an-address' }), /valid EVM address/);
+});
+
+test('read-only audit never loads a wallet or broadcasts', async () => {
+  const mock = {
+    async getNetwork() { return { chainId: MAROO_CHAIN_ID }; },
+    async getBlockNumber() { return 123; },
+    async getFeeData() { return { gasPrice: 7000n }; },
+    async getCode() { return '0x'; },
+    async call() { throw new Error('mock PCL unavailable'); },
+  };
+  const report = await buildReadonlyAudit({ provider: mock, env: {} });
+  assert.equal(report.mode, 'READ_ONLY');
+  assert.equal(report.walletLoaded, false);
+  assert.equal(report.signed, false);
+  assert.equal(report.broadcast, false);
+  assert.equal(report.checks.network.ok, true);
+  assert.equal(report.checks.pcl.ok, false);
 });
