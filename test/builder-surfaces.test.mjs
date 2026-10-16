@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { buildPreflightPlan } from '../scripts/preflight-plan.mjs';
 import { inspectNetwork, MAROO_CHAIN_ID, validateOptionalAddresses } from '../scripts/inspect-network.mjs';
 import { buildReadonlyAudit } from '../scripts/readonly-audit.mjs';
+import { inspectAgentIdentity } from '../scripts/inspect-agent.mjs';
 
 test('preflight plan rejects an amount above the local cap', () => {
   const result = buildPreflightPlan({ target: '0x0000000000000000000000000000000000000001', amount: '1001', maxAmount: '1000' });
@@ -52,5 +53,18 @@ test('read-only audit never loads a wallet or broadcasts', async () => {
   assert.equal(report.signed, false);
   assert.equal(report.broadcast, false);
   assert.equal(report.checks.network.ok, true);
-  assert.equal(report.checks.pcl.ok, false);
+  assert.equal(report.checks.pcl.DENYLIST_POLICY.ok, false);
+});
+
+test('agent identity inspection stays read-only and tolerates unsupported methods', async () => {
+  const mock = { async call() { throw new Error('method unavailable'); } };
+  const result = await inspectAgentIdentity({
+    provider: mock,
+    registryAddress: '0x0000000000000000000000000000000000000005',
+    agentId: '1',
+  });
+  assert.equal(result.readOnly, true);
+  assert.equal(result.signed, false);
+  assert.equal(result.broadcast, false);
+  assert.equal(result.owner, null);
 });
