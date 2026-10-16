@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { JsonRpcProvider, isAddress } from 'ethers';
 
 export const MAROO_CHAIN_ID = 450815n;
@@ -23,7 +22,7 @@ export function validateOptionalAddresses(env) {
 }
 
 /** Read-only RPC health check. It never loads a key, signs, or broadcasts. */
-export async function inspectNetwork({ provider, optionalAddresses = {} }) {
+export async function inspectNetwork({ provider, optionalAddresses = {}, rpcUrl = DEFAULT_RPC_URL }) {
   const network = await provider.getNetwork();
   if (network.chainId !== MAROO_CHAIN_ID) {
     throw new Error(`Wrong network: expected Maroo Testnet (${MAROO_CHAIN_ID}), received ${network.chainId}.`);
@@ -36,7 +35,7 @@ export async function inspectNetwork({ provider, optionalAddresses = {} }) {
   }
   return {
     chainId: network.chainId.toString(),
-    rpc: process.env.MAROO_RPC_URL || DEFAULT_RPC_URL,
+    rpc: rpcUrl,
     latestBlock: blockNumber,
     gasPriceWei: feeData.gasPrice?.toString() ?? null,
     surfaces: code,
@@ -47,9 +46,10 @@ export async function inspectNetwork({ provider, optionalAddresses = {} }) {
 }
 
 async function main() {
-  const provider = new JsonRpcProvider(process.env.MAROO_RPC_URL || DEFAULT_RPC_URL);
+  const rpcUrl = process.env.MAROO_RPC_URL || DEFAULT_RPC_URL;
+  const provider = new JsonRpcProvider(rpcUrl);
   try {
-    const result = await inspectNetwork({ provider, optionalAddresses: validateOptionalAddresses(process.env) });
+    const result = await inspectNetwork({ provider, rpcUrl, optionalAddresses: validateOptionalAddresses(process.env) });
     console.log(JSON.stringify(result, null, 2));
     console.log('Read-only network inspection complete; no wallet or transaction was used.');
   } finally {
