@@ -18,6 +18,8 @@
     "inspect:pcl": "node scripts/inspect-pcl.mjs",
     "record": "node scripts/record-activity.mjs",
     "inspect:network": "node scripts/inspect-network.mjs",
+    "inspect:eas": "node scripts/inspect-eas.mjs",
+    "inspect:agent": "node scripts/inspect-agent.mjs",
     "preflight:plan": "node scripts/preflight-plan.mjs",
     "audit:readonly": "node scripts/readonly-audit.mjs"
   },
