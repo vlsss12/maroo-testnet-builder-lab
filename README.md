@@ -20,6 +20,8 @@ This is an independent educational project, not an official Maroo repository. It
 - `scripts/readonly-audit.mjs` — combines network and PCL reads into a safe report; it never loads a wallet or broadcasts.
 - `scripts/inspect-eas.mjs` — read-only EAS attestation lookup by contract address and UID.
 - `scripts/inspect-agent.mjs` — read-only ERC-8004-style identity lookup with graceful support detection.
+- `examples/viem-readonly.mjs` — optional viem `createPublicClient` + PCL read example.
+- `docs/READ_ONLY_BUILDER_WORKFLOW.md` — reproducible RPC/PCL/EAS/Agent workflow.
 - `scripts/preflight-plan.mjs` — side-effect-free local target allowlist and amount-cap plan.
 - `agent/README.md` — safe ERC-8004/Agent identity integration boundary.
 - `maws/policy.example.json` — bounded MAWS policy example; it does not create or fund a wallet.
@@ -54,7 +56,7 @@ npm run record
 ```
 
 For the full walkthrough and PCL caveats, read [GUIDE.md](GUIDE.md).
-For a shareable community version, read [docs/COMMUNITY_GUIDE.md](docs/COMMUNITY_GUIDE.md).
+For a shareable community version, read [docs/COMMUNITY_GUIDE.md](docs/COMMUNITY_GUIDE.md). For the detailed read-only workflow, read [docs/READ_ONLY_BUILDER_WORKFLOW.md](docs/READ_ONLY_BUILDER_WORKFLOW.md).
 
 ## Maroo Testnet
 
