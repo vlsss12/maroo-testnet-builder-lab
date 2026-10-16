@@ -1,21 +1,33 @@
-# Maroo Builder Community Guide
+# Maroo Community Builder Guide
 
-This guide explains how to reproduce the public, read-only-first builder workflow in this repository. It is an independent community project and is not an official Maroo campaign.
+> This is an independent community guide. It is not an official Maroo airdrop announcement and does not guarantee points, eligibility, NFTs, tokens, or rewards.
 
-## What this proves
+## Goal
 
-The repository demonstrates:
+Use official Maroo Testnet surfaces to build useful, reproducible evidence. The strongest signal is meaningful builder work: integrations, tests, documentation, and safe technical feedback—not repetitive transactions.
 
-1. RPC network verification for Maroo Testnet.
-2. Solidity compilation and a minimal activity contract.
-3. PCL template discovery and side-effect-free preflight.
-4. Optional EAS attestation inspection by UID.
-5. Optional ERC-8004-style Agent identity inspection.
-6. A documented MAWS policy example that does not initialize a wallet.
+## Step 0 — Safety rules
 
-This is builder evidence, not proof of airdrop eligibility. Maroo has not published a guaranteed airdrop, points formula, snapshot date, or reward allocation in the official sources reviewed for this guide.
+- Use only official Maroo domains linked below.
+- Never paste a seed phrase, private key, wallet export, API token, or personal email into GitHub.
+- Never commit `.env`; keep it local and verify `.gitignore` before every push.
+- Do not use a mainnet key or real funds for Testnet experiments.
+- Do not run multi-wallet farming, repetitive scripts, spam transactions, or unapproved automation.
+- Do not submit real KYC or personal identity data to an endpoint unless Maroo officially documents that exact flow.
 
-## Safe setup
+## Step 1 — Verify the official network
+
+Official Testnet configuration:
+
+- Chain ID: `450815`
+- RPC: `https://rpc-testnet.maroo.io`
+- Explorer: `https://explorer-testnet.maroo.io`
+- Indexer: `https://explorer-testnet.maroo.io/blockscout/api/v2`
+- Mock KYC: `https://kyc-testnet.maroo.io`
+
+Confirm the network from the official documentation before using any address or endpoint: [Maroo Testnet Access](https://docs.maroo.io/resources/network/testnet-access/).
+
+## Step 2 — Run the public builder lab
 
 Requirements: Node.js 20+ and npm.
 
@@ -27,46 +39,96 @@ Requirements: Node.js 20+ and npm.
     npm run inspect:network
     npm run audit:readonly
 
-The read-only commands do not require a private key, wallet connection, .env file, signature, faucet request, or transaction.
+These commands are read-only or local. They do not require a private key, signature, wallet connection, faucet request, or transaction.
 
-## PCL audit
+## Step 3 — Check PCL policy surfaces
 
-The audit checks these documented identifiers:
+Run `npm run audit:readonly`. It checks the documented policy identifiers:
 
-- EAS_POLICY
-- DENYLIST_POLICY
-- VOLUME_POLICY
-- PERIODIC_VOLUME_POLICY
-- AGENT_OKRW_TRANSFER_LIMIT_POLICY
+- `EAS_POLICY`
+- `DENYLIST_POLICY`
+- `VOLUME_POLICY`
+- `PERIODIC_VOLUME_POLICY`
+- `AGENT_OKRW_TRANSFER_LIMIT_POLICY`
 
-An unavailable template is reported as unavailable. Do not infer that a policy is live or registered without an on-chain read.
+Save only the public result: chain ID, template identifier, metadata, and timestamp. If a template is unavailable, report it as unavailable; do not claim that it is active.
 
-## Optional EAS and Agent reads
+## Step 4 — Try the viem integration
 
-Only use contract addresses published by official Maroo documentation:
+Maroo documents EVM-compatible tooling, including ethers, viem, Hardhat, and Foundry.
+
+    npm install --no-save viem
+    node examples/viem-readonly.mjs
+
+The example uses `createPublicClient` and `readContract` only. It does not create a wallet client or broadcast a transaction.
+
+## Step 5 — Inspect EAS and ERC-8004 only when addresses are official
+
+Use contract addresses and schemas published by Maroo—not addresses copied from unverified posts.
 
     npm run inspect:eas -- <EAS_ADDRESS> <ATTESTATION_UID>
     npm run inspect:agent -- <IDENTITY_REGISTRY> <AGENT_ID>
 
-Both tools use eth_call only. Unsupported methods are reported without signing or broadcasting.
+Both commands use `eth_call`. They are inspection tools; they do not submit KYC, register an Agent, mint an identity, or change state.
 
-## Privacy checklist
+## Step 6 — Create meaningful builder evidence
 
-Before sharing a fork, screenshot, log, or pull request:
+Good contributions include:
 
-- Confirm that .env and private keys are not present.
-- Search for personal names, email addresses, seed phrases, and wallet addresses.
-- Do not publish deployer addresses or transaction hashes if they link activity to a private identity.
-- Do not copy secrets into GitHub Issues, Actions logs, README files, or screenshots.
-- Treat testnet assets as having no monetary value.
+- a tested RPC or Solidity integration;
+- a viem/wagmi/Foundry example;
+- a PCL policy explanation with reproducible read-only output;
+- a safe EAS or ERC-8004 diagnostic adapter;
+- tests for wrong-chain, unsupported-method, and policy-rejection cases;
+- clear installation instructions and a short technical write-up;
+- bug reports with redacted logs and exact reproduction steps.
+
+Publish code, tests, and documentation—not private activity data.
+
+## Step 7 — If you choose to use the Testnet wallet
+
+This is optional and not required for the read-only builder workflow. Only proceed when the action is explicitly documented by Maroo and you personally accept that public chain activity can link a wallet to your work.
+
+Before any signed action, manually verify:
+
+1. Chain ID is `450815`.
+2. Destination and contract address came from official documentation.
+3. Calldata and value are exactly expected.
+4. The action has a real development purpose.
+5. No script is repeating the same action unnaturally.
+
+Never treat transaction count as proof of eligibility.
+
+## Step 8 — Keep a private evidence log
+
+Store locally, never in the public repository:
+
+- dates and commands run;
+- test results;
+- redacted error messages;
+- links to public commits and documentation;
+- the reason for each meaningful experiment.
+
+Do not store private keys, seed phrases, personal emails, private wallet labels, or unredacted screenshots.
+
+## Step 9 — Monitor eligibility announcements
+
+Check only official Maroo sources for `airdrop`, `points`, `snapshot`, `eligibility`, `builder rewards`, `grant`, `hackathon`, `NFT`, and `testnet` changes. Until Maroo publishes explicit rules, no community guide can promise an allocation.
+
+## Final checklist before sharing
+
+- [ ] `npm test` passes.
+- [ ] `npm run compile` passes.
+- [ ] No `.env` or secret file is tracked.
+- [ ] No private key, seed phrase, personal name, email, or wallet address is present.
+- [ ] All claims link to an official Maroo source or a reproducible repository file.
+- [ ] The post says clearly that airdrop eligibility is unconfirmed.
 
 ## Official references
 
-- Maroo Testnet access: https://docs.maroo.io/resources/network/testnet-access
-- Maroo PCL dual-track model: https://docs.maroo.io/concepts/compliance/pcl-dual-track-model
-- Maroo Agent Hub: https://agent.maroo.io/
-- Maroo Testnet explorer: https://explorer-testnet.maroo.io/
-
-## Important limitation
-
-No activity can guarantee an airdrop. Prefer meaningful, reproducible builder work over repetitive transactions or automation. Re-check official Maroo announcements for any future points, eligibility, snapshot, builder, grant, or campaign rules.
+- [Maroo Testnet Access](https://docs.maroo.io/resources/network/testnet-access/)
+- [PCL dual-track model](https://docs.maroo.io/concepts/compliance/pcl-dual-track-model)
+- [PCL built-in policy templates](https://docs.maroo.io/concepts/compliance/pcl-policy-templates)
+- [Maroo Agent Hub](https://agent.maroo.io/)
+- [Maroo Testnet Explorer](https://explorer-testnet.maroo.io/)
+- [Maroo Terms](https://experience.maroo.io/en/terms)
