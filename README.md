@@ -18,6 +18,8 @@ This is an independent educational project, not an official Maroo repository. It
 - `scripts/inspect-pcl.mjs` — read-only PCL template and proxy-registry inspector; needs no wallet.
 - `scripts/inspect-network.mjs` — read-only RPC health check plus optional EAS/ERC-8004/Agent surface bytecode checks.
 - `scripts/readonly-audit.mjs` — combines network and PCL reads into a safe report; it never loads a wallet or broadcasts.
+- `scripts/inspect-eas.mjs` — read-only EAS attestation lookup by contract address and UID.
+- `scripts/inspect-agent.mjs` — read-only ERC-8004-style identity lookup with graceful support detection.
 - `scripts/preflight-plan.mjs` — side-effect-free local target allowlist and amount-cap plan.
 - `agent/README.md` — safe ERC-8004/Agent identity integration boundary.
 - `maws/policy.example.json` — bounded MAWS policy example; it does not create or fund a wallet.
@@ -40,6 +42,7 @@ npm run compile
 npm test
 npm run deploy
 npm run inspect:network
+npm run audit:readonly
 npm run audit:readonly
 npm run preflight:plan -- 0x0000000000000000000000000000000000000001 500000 1000000
 ```
@@ -94,3 +97,14 @@ At the time this guide was prepared, we found no official Maroo airdrop or point
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+## Read-only EAS and Agent checks
+
+The optional EAS and ERC-8004-style Agent commands use `eth_call` only. They do not load a wallet, request a signature, submit KYC, register an identity, or broadcast a transaction:
+
+```bash
+npm run inspect:eas -- <EAS_ADDRESS> <ATTESTATION_UID>
+npm run inspect:agent -- <IDENTITY_REGISTRY> <AGENT_ID>
+```
+
+Unsupported methods are reported as unsupported. Never guess contract addresses or publish private configuration.
