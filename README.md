@@ -54,6 +54,7 @@ npm run record
 ```
 
 For the full walkthrough and PCL caveats, read [GUIDE.md](GUIDE.md).
+For a shareable community version, read [docs/COMMUNITY_GUIDE.md](docs/COMMUNITY_GUIDE.md).
 
 ## Maroo Testnet
 
